@@ -15,4 +15,8 @@ This is server part for Todo App on MERN stack
   - `npm i mongoose`
 
 - cors
+
   - `npm i cors`
+
+- nodemon
+  - `npm i nodemon`
