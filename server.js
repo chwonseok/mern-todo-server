@@ -1,9 +1,13 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const mongoose = require('mongoose');
 const TodoModel = require('./models/Todos');
 
-// DB Connection
+///// DB Connection
+app.use(cors()); // cors is a library to allow connect frontend and backend
+app.use(express.json()); // it allowes to get data as json whenever you need to receive data from frontend
+
 mongoose.connect(
   'mongodb+srv://chws:rkskekfk12@cluster0.sc83b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   () => {
@@ -13,10 +17,12 @@ mongoose.connect(
   }
 );
 
-app.get('/insert', async (req, res) => {
-  const todo = new TodoModel({ date: '2021-11-27', task: 'finish MERN study' });
+app.post('/addtodo', async (req, res) => {
+  const date = req.body.date;
+  const task = req.body.task;
+  const todo = new TodoModel({ date: date, task: task });
   await todo.save();
-  res.send('DATA SAVED');
+  res.send('SUCCESSFULLY SAVED DATA');
 });
 
 app.get('/read', async (req, res) => {
