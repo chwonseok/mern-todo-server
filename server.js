@@ -5,8 +5,8 @@ const mongoose = require('mongoose');
 const TodoModel = require('./models/Todos');
 
 ///// DB Connection
-app.use(cors()); // cors is a library to allow connect frontend and backend
-app.use(express.json()); // it allowes to get data as json whenever you need to receive data from frontend
+app.use(cors()); // cors: FE와 BE 연결해주는 라이브러리
+app.use(express.json()); // FE에서 받은 data를 json으로 바꿔줌
 
 mongoose.connect(
   'mongodb+srv://chws:rkskekfk12@cluster0.sc83b.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -17,7 +17,8 @@ mongoose.connect(
   }
 );
 
-app.post('/addtodo', async (req, res) => {
+// Client -> POST request -> DB에 add
+app.post('/add', async (req, res) => {
   const date = req.body.date;
   const task = req.body.task;
   const todo = new TodoModel({ date: date, task: task });
@@ -25,6 +26,7 @@ app.post('/addtodo', async (req, res) => {
   res.send('SUCCESSFULLY SAVED DATA');
 });
 
+// Client <- GET request <- DB에서 read
 app.get('/read', async (req, res) => {
   TodoModel.find({}, (error, result) => {
     if (error) res.send(error);
