@@ -23,12 +23,11 @@ app.post('/add', async (req, res) => {
   const task = req.body.task;
   const todo = new TodoModel({ date: date, task: task });
   await todo.save();
-  res.send('SUCCESSFULLY SAVED DATA');
+  res.send(todo);
 });
 
 // Update
 app.put('/update', async (req, res) => {
-  console.log(req);
   const id = req.body.id; // update 시킬 todo의 id를 가져옴
   const newTask = req.body.task;
 
@@ -50,4 +49,11 @@ app.get('/read', async (req, res) => {
     if (error) res.send(error);
     res.send(result);
   });
+});
+
+// Delete
+app.delete('/delete/:id', async (req, res) => {
+  const id = req.params.id;
+  await TodoModel.findByIdAndRemove(id).exec();
+  res.send('TODO DELETED');
 });
