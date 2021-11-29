@@ -26,6 +26,24 @@ app.post('/add', async (req, res) => {
   res.send('SUCCESSFULLY SAVED DATA');
 });
 
+// Update
+app.put('/update', async (req, res) => {
+  console.log(req);
+  const id = req.body.id; // update 시킬 todo의 id를 가져옴
+  const newTask = req.body.task;
+
+  try {
+    await TodoModel.findById(id, (error, taskObj) => {
+      taskObj.task = newTask;
+      taskObj.save();
+    });
+  } catch (error) {
+    console.log(error);
+  }
+
+  res.send('UPDATE COMPLETED');
+});
+
 // Client <- GET request <- DB에서 read
 app.get('/read', async (req, res) => {
   TodoModel.find({}, (error, result) => {
